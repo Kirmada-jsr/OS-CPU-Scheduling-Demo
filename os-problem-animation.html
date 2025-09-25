@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SJF Scheduling - Gantt Chart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      padding-top: 40px;
+    }
+
+    h2 { margin-bottom: 0; }
+
+    .queue {
+      display: flex;
+      gap: 10px;
+      border: 2px solid #555;
+      padding: 10px;
+      border-radius: 10px;
+      background: #222;
+      min-width: 350px;
+      justify-content: center;
+      position: relative;
+    }
+    .queue::before {
+      content: "Ready Queue";
+      position: absolute;
+      top: -20px;
+      left: 10px;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .process {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: #111;
+      opacity: 0;
+    }
+    .p1 { background: #e74c3c; animation: appear 1s forwards 0.5s; }
+    .p2 { background: #3498db; animation: appear 1s forwards 1.5s; }
+    .p3 { background: #2ecc71; animation: appear 1s forwards 2.5s; }
+
+    @keyframes appear { to { opacity: 1; } }
+
+    /* --- Gantt Chart --- */
+    .gantt {
+      position: relative;
+      width: 500px;
+      height: 70px;
+      border: 2px solid #555;
+      background: #222;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .gantt::before {
+      content: "CPU Timeline (SJF)";
+      position: absolute;
+      top: -22px;
+      left: 0;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .bar {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      opacity: 0;
+    }
+    .bar span {
+      position: absolute;
+      bottom: 5px;
+      left: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    /* P3 (BT=2, shortest, runs first) */
+    .bar.p3 {
+      background: #2ecc71;
+      width: 80px; /* proportional to burst time */
+      animation: showBar 2s forwards 4s;
+    }
+    /* P2 (BT=4, second) */
+    .bar.p2 {
+      background: #3498db;
+      width: 160px;
+      left: 80px;
+      animation: showBar 4s forwards 6s;
+    }
+    /* P1 (BT=8, last) */
+    .bar.p1 {
+      background: #e74c3c;
+      width: 320px;
+      left: 240px;
+      animation: showBar 8s forwards 10s;
+    }
+
+    @keyframes showBar {
+      from { transform: scaleX(0); opacity: 1; }
+      to   { transform: scaleX(1); opacity: 1; }
+    }
+
+    /* Time markers */
+    .times {
+      display: flex;
+      justify-content: space-between;
+      width: 500px;
+      margin-top: 5px;
+      font-size: 13px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <h2>SJF Scheduling - Gantt Chart Animation</h2>
+
+  <div class="queue">
+    <div class="process p1">P1</div>
+    <div class="process p2">P2</div>
+    <div class="process p3">P3</div>
+  </div>
+
+  <div class="gantt">
+    <div class="bar p3"><span>P3</span></div>
+    <div class="bar p2"><span>P2</span></div>
+    <div class="bar p1"><span>P1</span></div>
+  </div>
+  <div class="times">
+    <span>0</span>
+    <span>2</span>
+    <span>6</span>
+    <span>14</span>
+  </div>
+</body>
+</html>
